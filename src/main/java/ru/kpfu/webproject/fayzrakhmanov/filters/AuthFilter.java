@@ -20,7 +20,7 @@ public class AuthFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        protectedPaths = new String[]{"/login", "/registration", "/books"};
+        protectedPaths = new String[]{"/crudPanel", "/books"};
         context = filterConfig.getServletContext();
         securityService = (SecurityService) context.getAttribute(SECURITY_SERVICE);
     }
@@ -30,24 +30,33 @@ public class AuthFilter implements Filter {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
 
+        if (request.getRequestURI().equals("/")) {
+            response.sendRedirect("/books");
+            return;
+        }
+
         if (securityService.isAuthenticated(request, request.getSession())) {
             request.setAttribute(AUTH, true);
+            //если не админ, то не пускаем в панель
+            if (request.getRequestURI().startsWith("/crudPanel") && !securityService.isAdmin(request)) {
+                response.sendRedirect("/books");
+                return;
+            }
+            filterChain.doFilter(request, response);
         } else {
             request.setAttribute(AUTH, false);
             boolean isProtected = false;
             for(String s : protectedPaths){
-                if(request.getRequestURI().startsWith(request.getContextPath() + s)){
+                if(request.getRequestURI().startsWith(s)){
                     isProtected = true;
                 }
             }
-            if(isProtected){
+            if(!isProtected){
                 filterChain.doFilter(request, response);
                 return;
             }
-            response.sendRedirect(request.getContextPath() + "/login");
-
+            response.sendRedirect("/login");
         }
-        filterChain.doFilter(request, response);
     }
 
     @Override

@@ -157,14 +157,13 @@ public class BookRepositoryJdbcImpl implements BookRepository {
                             psSelectBook.setString(1, entity.getIsbn());
                             ResultSet rsSelectBook = psSelectBook.executeQuery();
                             if (rsSelectBook.next()) {
-                                int bookId = rsSelectBook.getInt(0);
+                                int bookId = rsSelectBook.getInt(1);
                                 PreparedStatement psInsertBookAuthor = conn.prepareStatement(DatabaseConstants.INSERT_AUTHOR_BOOK);
-                                psInsertBookAuthor.setInt(0, bookId);
-                                psInsertBookAuthor.setInt(1, authorId);
-                                psInsertBook.execute();
+                                psInsertBookAuthor.setInt(1, bookId);
+                                psInsertBookAuthor.setInt(2, authorId);
+                                psInsertBookAuthor.execute();
                             }
                         }
-
 
                     } catch (Exception e) {
                         message = e.getMessage();
@@ -203,15 +202,17 @@ public class BookRepositoryJdbcImpl implements BookRepository {
 
     }
 
-    //каскадное удаление проверить
     @Override
     public void delete(Book entity) {
         if (entity != null && entity.getId() > 0) {
             try (Connection conn = dataSource.getConnection();
-                 PreparedStatement psDeleteBook = conn.prepareStatement(DatabaseConstants.DELETE_BOOK)
+                 PreparedStatement psDeleteBook = conn.prepareStatement(DatabaseConstants.DELETE_BOOK);
+                 PreparedStatement psDeleteAuthorBook = conn.prepareStatement(DatabaseConstants.DELETE_AUTHOR_BOOK)
             ) {
                 psDeleteBook.setLong(1, entity.getId());
-                psDeleteBook.execute();
+                psDeleteAuthorBook.setLong(1, entity.getId());
+                psDeleteAuthorBook.execute(); //Сначала это
+                psDeleteBook.execute(); //Потом это
             } catch (SQLException ignored) {
 
             }
@@ -222,10 +223,13 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     public void delete(int id) {
         if (id > 0) {
             try (Connection conn = dataSource.getConnection();
-                 PreparedStatement psDeleteBook = conn.prepareStatement(DatabaseConstants.DELETE_BOOK)
+                 PreparedStatement psDeleteBook = conn.prepareStatement(DatabaseConstants.DELETE_BOOK);
+                 PreparedStatement psDeleteAuthorBook = conn.prepareStatement(DatabaseConstants.DELETE_AUTHOR_BOOK)
             ) {
                 psDeleteBook.setLong(1, id);
-                psDeleteBook.execute();
+                psDeleteAuthorBook.setLong(1, id);
+                psDeleteAuthorBook.execute(); //Сначала это
+                psDeleteBook.execute(); //Потом это
             } catch (SQLException ignored) {
             }
         }

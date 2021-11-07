@@ -1,16 +1,11 @@
 package ru.kpfu.webproject.fayzrakhmanov.repositories;
 
-import ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants;
-import ru.kpfu.webproject.fayzrakhmanov.da.Database;
-import ru.kpfu.webproject.fayzrakhmanov.entity.Author;
 import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
 
 import static ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants.*;
 

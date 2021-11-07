@@ -3,8 +3,6 @@ package ru.kpfu.webproject.fayzrakhmanov.servlets;
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.InvalidEmailException;
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.OccupiedLoginException;
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.WeakPasswordException;
-import ru.kpfu.webproject.fayzrakhmanov.constants.ServicesConstants;
-import ru.kpfu.webproject.fayzrakhmanov.controllers.UserDaService;
 import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 import ru.kpfu.webproject.fayzrakhmanov.services.SecurityService;
 
@@ -51,17 +49,20 @@ public class RegistrationServlet extends HttpServlet {
             c.setMaxAge(60*60*24*365);
             response.addCookie(c);
 
-            response.sendRedirect(context.getContextPath() + "/123");
+            response.sendRedirect("/books");
         } catch (InvalidEmailException e){
             request.setAttribute("message", "Неверный email");
         } catch (OccupiedLoginException e){
             request.setAttribute("message", "Email уже зарегистрирован");
         } catch (WeakPasswordException e){
-            request.setAttribute("message", "Пароль слишком короткий(мин. 6 символов)");
+            request.setAttribute("message", "Пароль слишком короткий(мин. 5 символов)");
         }
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (securityService.isAuthenticated(request, request.getSession())) {
+            securityService.logout(request, response, request.getSession());
+        }
         context.getRequestDispatcher("/pages/registration.jsp").forward(request, response);
     }
 }

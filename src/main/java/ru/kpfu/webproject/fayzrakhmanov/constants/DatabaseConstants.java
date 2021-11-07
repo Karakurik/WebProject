@@ -73,7 +73,8 @@ public class DatabaseConstants {
             "INNER JOIN library.author_book ab on b.id=ab.book_id " +
             "INNER JOIN library.author a on a.id=ab.author_id " +
             "INNER JOIN library.genre g on b.genre_id=g.id " +
-            "INNER JOIN library.publisher p on b.publisher_id=p.id";
+            "INNER JOIN library.publisher p on b.publisher_id=p.id " +
+            "ORDER BY b.id";
 
     public static String SELECT_BOOK_BY_GENRE = "" +
             "SELECT b.id, b.name, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
@@ -128,8 +129,13 @@ public class DatabaseConstants {
             "book_id, author_id) " +
             "VALUES (?, ?)";
 
+    public static String DELETE_AUTHOR_BOOK = "" +
+            "DELETE " +
+            "FROM " + SCHEMA + AUTHOR_BOOK_TABLE + " " +
+            "WHERE book_id = ?";
+
     public static String DELETE_BOOK = "" +
             "DELETE " +
             "FROM " + SCHEMA + BOOK_TABLE + " " +
-            "WHERE ID = ?";
+            "WHERE ID = ?;";
 }

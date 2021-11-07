@@ -1,8 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.repositories;
 
 import ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants;
-import ru.kpfu.webproject.fayzrakhmanov.da.Database;
-import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Genre;
 
 import javax.sql.DataSource;

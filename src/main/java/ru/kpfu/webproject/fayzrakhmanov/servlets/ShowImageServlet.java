@@ -25,8 +25,10 @@ public class ShowImageServlet extends HttpServlet {
 
             ArrayList<Book> list = (ArrayList<Book>)request.getSession(false).getAttribute("currentBookList");
             Book book = list.get(index);
-            response.setContentLength(book.getImage().length);
-            out.write(book.getImage());
+            if (book.getImage() != null) {
+                response.setContentLength(book.getImage().length);
+                out.write(book.getImage());
+            }
         } finally {
             out.close();
         }

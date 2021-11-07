@@ -33,10 +33,10 @@
   <div class="card">
     <div class="card-body">
       <c:if test="${book != null}">
-      <form action="crudPanel/update" method="post">
+      <form action="/crudPanel/update" method="post">
         </c:if>
         <c:if test="${book == null}">
-        <form action="crudPanel/insert" method="post">
+        <form action="/crudPanel/insert" method="post">
           </c:if>
 
           <caption>

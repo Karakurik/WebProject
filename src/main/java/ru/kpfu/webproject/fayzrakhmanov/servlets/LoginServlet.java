@@ -2,9 +2,6 @@ package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.NoSuchLoginException;
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.WrongPasswordException;
-import ru.kpfu.webproject.fayzrakhmanov.constants.ServletsConstants;
-import ru.kpfu.webproject.fayzrakhmanov.controllers.UserDaService;
-import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 import ru.kpfu.webproject.fayzrakhmanov.services.SecurityService;
 
 import javax.servlet.ServletContext;
@@ -54,6 +51,9 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        if (securityService.isAuthenticated(request, request.getSession())) {
+            securityService.logout(request, response, request.getSession());
+        }
         context.getRequestDispatcher("/pages/login.jsp").forward(request, response);
     }
 }

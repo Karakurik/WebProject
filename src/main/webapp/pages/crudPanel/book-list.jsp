@@ -5,6 +5,7 @@
 
 <head>
   <title>User Management Application</title>
+  <script type="text/javascript" src="/js/confirm.js"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 </head>
 
@@ -18,7 +19,7 @@
     </div>
 
     <ul class="navbar-nav">
-      <li><a href="<%=request.getContextPath()%>/crudPanel" class="nav-link">Books</a></li>
+      <li><a href="<%=request.getContextPath()%>/books" class="nav-link">Books</a></li>
     </ul>
   </nav>
 </header>
@@ -79,7 +80,7 @@
           <td>
             <c:out value="${book.getPublisher()}" />
           </td>
-          <td><a href="crudPanel/edit?id=<c:out value='${book.getId()}' />">Edit</a> &nbsp;&nbsp;&nbsp;&nbsp; <a href="crudPanel/delete?id=<c:out value='${book.getId()}' />">Delete</a></td>
+          <td><a href="crudPanel/edit?id=<c:out value='${book.getId()}' />">Edit</a> &nbsp;&nbsp;&nbsp;&nbsp; <a class="confirmation" href="crudPanel/delete?id=<c:out value='${book.getId()}' />">Delete</a></td>
         </tr>
       </c:forEach>
       <!-- } -->

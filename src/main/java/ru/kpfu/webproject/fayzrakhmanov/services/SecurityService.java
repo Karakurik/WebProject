@@ -4,6 +4,7 @@ import ru.kpfu.webproject.fayzrakhmanov.constants.CookieConstants;
 import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.UUID;
 
@@ -21,5 +22,7 @@ public interface SecurityService {
 
     void validateUser(User user);
 
-    void logout(HttpServletRequest req, HttpSession session);
+    void logout(HttpServletRequest request, HttpServletResponse response, HttpSession session);
+
+    boolean isAdmin(HttpServletRequest request);
 }

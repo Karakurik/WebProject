@@ -7,6 +7,7 @@ import ru.kpfu.webproject.fayzrakhmanov.repositories.UserRepository;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -31,7 +32,7 @@ public class SecurityServiceJdbcImpl implements SecurityService {
     @Override
     public void registration(User user, String rawPassword, HttpSession session) {
         validateUser(user);
-        if(rawPassword.length() < 6) throw new WeakPasswordException("Password too short");
+        if(rawPassword.length() < 5) throw new WeakPasswordException("Password too short");
         String hash = passwordEncoder.encode(rawPassword);
         user.setPasswordHash(hash);
         userRepository.create(user);
@@ -57,7 +58,13 @@ public class SecurityServiceJdbcImpl implements SecurityService {
         if(cookies != null){
             for (Cookie c : cookies){
                 if(c.getName().equals(AUTH_COOKIE_NAME)){
-                    return true;
+                    if (!c.getValue().equals("null")) {
+                        User user = userRepository.getByLogin(c.getValue());
+                        if (user != null) {
+                            session.setAttribute(USER, user);
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -76,7 +83,31 @@ public class SecurityServiceJdbcImpl implements SecurityService {
     }
 
     @Override
-    public void logout(HttpServletRequest req, HttpSession session) {
+    public void logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         session.removeAttribute(USER);
+        Cookie[] cookies = request.getCookies();
+        for (int i = 0; i < cookies.length; i++) {
+            if (cookies[i].getName().equals(AUTH_COOKIE_NAME)) {
+                cookies[i] = new Cookie(AUTH_COOKIE_NAME, "null");
+                cookies[i].setMaxAge(1);
+                response.addCookie(cookies[i]);
+                break;
+            }
+        }
+    }
+
+    @Override
+    public boolean isAdmin(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        if(cookies != null){
+            for (Cookie c : cookies){
+                if(c.getName().equals(AUTH_COOKIE_NAME)){
+                    if (c.getValue().equals("admin")) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 }

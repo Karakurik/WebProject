@@ -95,13 +95,12 @@ public class CrudPanelServlet extends HttpServlet {
 
     private Book getBookByParametres(HttpServletRequest request, HttpServletResponse response) {
         Book book = new Book();
-        book.setId(Integer.parseInt(request.getParameter("id")));
         book.setName(request.getParameter("name"));
-        book.setGenre(request.getParameter("genre"));
-        book.setIsbn(request.getParameter("isbn"));
-        book.setAuthor(request.getParameter("author"));
         book.setPageCount(Integer.parseInt(request.getParameter("page_count")));
-        book.setPublishDate(Integer.parseInt(request.getParameter("publish_year")));
+        book.setIsbn(request.getParameter("isbn"));
+        book.setGenre(request.getParameter("genre"));
+        book.setAuthor(request.getParameter("author"));
+        book.setPublishDate(Integer.parseInt(request.getParameter("publish_date")));
         book.setPublisher(request.getParameter("publisher"));
 
         return book;
@@ -110,7 +109,9 @@ public class CrudPanelServlet extends HttpServlet {
     private void updateUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
 
-        bookService.update(getBookByParametres(request, response));
+        Book book = getBookByParametres(request, response);
+        book.setId(Integer.parseInt(request.getParameter("id")));
+        bookService.update(book);
         response.sendRedirect("/crudPanel");
     }
 
