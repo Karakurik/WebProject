@@ -5,6 +5,8 @@ import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 import java.util.List;
 import java.util.UUID;
 
-public interface UserRepository extends CrudRepository<User> {
+public interface UserRepository {
     User getByLogin(String login);
+
+    void create(User user);
 }

@@ -14,6 +14,9 @@ public class DatabaseConstants {
     private static String AUTHOR_TABLE = "author";
     private static String GENRE_TABLE = "genre";
     private static String BOOK_TABLE = "book";
+    private static String PUBLISHER_TABLE = "publisher";
+    private static String AUTHOR_BOOK_TABLE = "author_book";
+    private static String BOOK_CONTENT = "content";
 
     /**
      * Поля таблицы LibaryUser
@@ -59,8 +62,74 @@ public class DatabaseConstants {
             "FROM " + SCHEMA + GENRE_TABLE + " " +
             "ORDER BY " + NAME_FIELD;
 
-    public static String SELECT_BOOK = "" +
+    /*public static String SELECT_BOOK = "" +
             "SELECT * " +
             "FROM " + SCHEMA + BOOK_TABLE + " " +
-            "ORDER BY " + NAME_FIELD;
+            "ORDER BY " + NAME_FIELD;*/
+
+    public static String SELECT_BOOK = "" +
+            "SELECT b.id, b.name, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
+            "FROM " + SCHEMA + BOOK_TABLE + " b " +
+            "INNER JOIN library.author_book ab on b.id=ab.book_id " +
+            "INNER JOIN library.author a on a.id=ab.author_id " +
+            "INNER JOIN library.genre g on b.genre_id=g.id " +
+            "INNER JOIN library.publisher p on b.publisher_id=p.id";
+
+    public static String SELECT_BOOK_BY_GENRE = "" +
+            "SELECT b.id, b.name, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
+            "FROM " + SCHEMA + BOOK_TABLE + " b " +
+            "INNER JOIN library.author_book ab on b.id=ab.book_id " +
+            "INNER JOIN library.author a on a.id=ab.author_id " +
+            "INNER JOIN library.genre g on b.genre_id=g.id " +
+            "INNER JOIN library.publisher p on b.publisher_id=p.id " +
+            "WHERE genre_id=? order by b.name " +
+            "limit 0,5";
+
+    public static String SELECT_BOOK_CONTENT_BY_ID = "" +
+            "SELECT " + BOOK_CONTENT + " " +
+            "FROM " + SCHEMA + BOOK_TABLE + " " +
+            "WHERE " + "id=?";
+
+    public static String SELECT_AUTHOR_BY_FIO = "" +
+            "SELECT * " +
+            "FROM " + SCHEMA + AUTHOR_TABLE + " " +
+            "WHERE " + FIO_FIELD_AUTHOR_TABLE + " = ?";
+
+    public static String SELECT_GENRE_BY_NAME = "" +
+            "SELECT * " +
+            "FROM " + SCHEMA + GENRE_TABLE + " " +
+            "WHERE " + NAME_FIELD + " = ?";
+
+    public static String SELECT_PUBLISHER_BY_NAME = "" +
+            "SELECT * " +
+            "FROM " + SCHEMA + PUBLISHER_TABLE + " " +
+            "WHERE " + NAME_FIELD + " = ?";
+
+    public static String INSERT_GENRE =
+            "INSERT INTO " + SCHEMA + GENRE_TABLE + " (" + NAME_FIELD + ") " +
+                    "VALUES (?);";
+
+    public static String INSERT_PUBLISHER =
+            "INSERT INTO " + SCHEMA + PUBLISHER_TABLE + " (" + NAME_FIELD + ") " +
+                    "VALUES (?)";
+
+    public static String INSERT_BOOK = "" +
+            "INSERT INTO " + SCHEMA + BOOK_TABLE + " (" +
+            "name, content, page_count, isbn, genre_id, publish_year, publisher_id) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    public static String SELECT_BOOK_BY_ISBN = "" +
+            "SELECT id " +
+            "FROM " + SCHEMA + BOOK_TABLE + " " +
+            "WHERE isbn = ?";
+
+    public static String INSERT_AUTHOR_BOOK = "" +
+            "INSERT INTO " + SCHEMA + AUTHOR_BOOK_TABLE + " (" +
+            "book_id, author_id) " +
+            "VALUES (?, ?)";
+
+    public static String DELETE_BOOK = "" +
+            "DELETE " +
+            "FROM " + SCHEMA + BOOK_TABLE + " " +
+            "WHERE ID = ?";
 }

@@ -19,7 +19,7 @@
                     <br><strong>Количество страниц:</strong> ${book.getPageCount()}
                     <br><strong>Год издания:</strong> ${book.getPublishDate()}
                     <br><strong>Автор:</strong> ${book.getAuthor()}
-                    <p style="margin:10px;"> <a href="#<%--readBook?bookName:${book.getName()}--%>">Читать</a></p>
+                    <p style="margin:10px;"> <a href="readBook?id:${book.getId()}">Читать</a></p>
                 </div>
             </div>
         </c:forEach>

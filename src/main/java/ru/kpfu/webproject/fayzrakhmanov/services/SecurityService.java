@@ -22,6 +22,4 @@ public interface SecurityService {
     void validateUser(User user);
 
     void logout(HttpServletRequest req, HttpSession session);
-
-    void fullLogout(User user);
 }

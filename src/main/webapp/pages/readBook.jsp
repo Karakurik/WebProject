@@ -1,16 +1,15 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: insaf
-  Date: 06.11.2021
-  Time: 13:17
-  To change this template use File | Settings | File Templates.
---%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>${bookName}</title>
+
+    <title></title>
 </head>
 <body>
-
+    <script type="text/javascript" src="<c:url value="/js/readFile.js"/>"></script>
+    <script type="text/javascript">
+        // test()
+        readFiles(${content})
+    </script>
 </body>
 </html>

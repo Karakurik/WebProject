@@ -11,6 +11,7 @@
         <t:header_books/>
         <t:left_menu/>
         <jsp:doBody/>
+        <t:footer/>
     </div>
 </body>
 </html>

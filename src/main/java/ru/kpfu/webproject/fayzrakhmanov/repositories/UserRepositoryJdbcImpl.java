@@ -21,8 +21,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
         this.dataSource = dataSource;
     }
 
-    @Override
-    public void save(User entity) {
+    public void create(User entity) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement psRegister = conn.prepareStatement(REGISTER_USER)
         ) {
@@ -36,29 +35,12 @@ public class UserRepositoryJdbcImpl implements UserRepository {
         }
     }
 
-    @Override
-    public void update(User entity) {
-
-    }
-
-    @Override
-    public void delete(User entity) {
-
-    }
-
-    @Override
     public List<User> findAll() {
         List<User> userList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
             Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(SELECT_ALL_USER);
             while (rs.next()) {
-//                User user = new User();
-//                user.setLogin(rs.getString(LOGIN_FIELD_USER_TABLE));
-//                user.setName(rs.getString(NAME_FIELD_USER_TABLE));
-//                user.setPasswordHash(rs.getString(PASSWORD_FIELD_USER_TABLE));
-//                user.setEmail(rs.getString(EMAIL_FIELD_USER_TABLE));
-//                userList.add(user);
                 userList.add(userByRs(rs));
             }
         } catch (SQLException ignored) {

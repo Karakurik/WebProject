@@ -13,6 +13,7 @@ CREATE TABLE `genre` (
 	`name` varchar(100) NOT NULL,
 	PRIMARY KEY (`id`)
 );
+alter table genre add constraint unique (name);
 
 CREATE TABLE `book` (
 	id bigint(20) NOT NULL AUTO_INCREMENT,
@@ -30,6 +31,7 @@ CREATE TABLE `book` (
 	KEY `fk_genre_idx` (`genre_id`),
 	CONSTRAINT `fk_genre` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON UPDATE CASCADE
 );
+alter table book add constraint unique (isbn);
 
 CREATE TABLE `publisher` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,

@@ -8,7 +8,6 @@ import ru.kpfu.webproject.fayzrakhmanov.repositories.UserRepository;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,7 +34,7 @@ public class SecurityServiceJdbcImpl implements SecurityService {
         if(rawPassword.length() < 6) throw new WeakPasswordException("Password too short");
         String hash = passwordEncoder.encode(rawPassword);
         user.setPasswordHash(hash);
-        userRepository.save(user);
+        userRepository.create(user);
         session.setAttribute(USER, user);
     }
 
@@ -79,10 +78,5 @@ public class SecurityServiceJdbcImpl implements SecurityService {
     @Override
     public void logout(HttpServletRequest req, HttpSession session) {
         session.removeAttribute(USER);
-    }
-
-    @Override
-    public void fullLogout(User user) {
-        userRepository.delete(user);
     }
 }

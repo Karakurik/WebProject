@@ -1,6 +1,5 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
-import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.services.BookService;
 
 import javax.servlet.ServletContext;
@@ -10,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.List;
+import java.sql.Blob;
 
 import static ru.kpfu.webproject.fayzrakhmanov.constants.ServicesConstants.BOOK_SERVICE;
 
@@ -28,7 +27,8 @@ public class ReadBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-//        Book book = bookService.getBookByName(request.getAttribute("bookName"))
+        Blob content = bookService.getBookContentById(3);
+        request.setAttribute("content", content);
 
         context.getRequestDispatcher("/pages/readBook.jsp").forward(request, response);
     }
