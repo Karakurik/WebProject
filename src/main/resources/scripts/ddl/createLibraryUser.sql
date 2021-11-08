@@ -9,3 +9,7 @@ CREATE TABLE libraryuser
     email varchar(128) NOT NULL
 );
 CREATE UNIQUE INDEX libraryuser_login_uindex ON libraryuser (login);
+
+alter table libraryuser
+    add constraint library_user_email_unique
+        UNIQUE (email);

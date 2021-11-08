@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<t:layout_books title="Книги2">
+<t:layout_books title="Книги">
     <div class="book_list">
         <c:if test="${!list.isEmpty()}">
             <h3>${param.name}</h3>

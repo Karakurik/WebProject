@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.services;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DataSourceException;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Author;
 import ru.kpfu.webproject.fayzrakhmanov.repositories.AuthorRepository;
 
@@ -13,7 +14,7 @@ public class AuthorServiceJdbcImpl implements AuthorService {
     }
 
     @Override
-    public List<Author> getAuthorList() {
+    public List<Author> getAuthorList() throws DataSourceException {
         return authorRepository.getAuthorList();
     }
 }

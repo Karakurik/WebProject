@@ -1,6 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.Exceptions;
 
-public class WrongPasswordException extends RuntimeException{
+public class WrongPasswordException extends Exception{
     public WrongPasswordException() {
     }
 

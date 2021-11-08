@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.repositories;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DataSourceException;
 import ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Genre;
 
@@ -18,7 +19,7 @@ public class GenreRepositoryJdbcImpl implements GenreRepository {
         this.dataSource = dataSource;
     }
 
-    private List<Genre> getGenres() {
+    private List<Genre> getGenres() throws DataSourceException {
         List<Genre> genreList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
             Statement stmt = conn.createStatement()){
@@ -30,12 +31,13 @@ public class GenreRepositoryJdbcImpl implements GenreRepository {
                 genre.setName(rs.getString("name"));
                 genreList.add(genre);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            throw new DataSourceException(e);
         }
         return genreList;
     }
 
-    public List<Genre> getGenreList() {
+    public List<Genre> getGenreList() throws DataSourceException {
         return getGenres();
     }
 }

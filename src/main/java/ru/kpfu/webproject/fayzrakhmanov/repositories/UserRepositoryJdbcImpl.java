@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.repositories;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DataSourceException;
 import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 
 import javax.sql.DataSource;
@@ -16,7 +17,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
         this.dataSource = dataSource;
     }
 
-    public void create(User entity) {
+    public void create(User entity) throws DataSourceException {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement psRegister = conn.prepareStatement(REGISTER_USER)
         ) {
@@ -26,7 +27,8 @@ public class UserRepositoryJdbcImpl implements UserRepository {
             psRegister.setString(4, entity.getEmail());
 
             psRegister.execute();
-        } catch (SQLException throwables) {
+        } catch (SQLException e) {
+            throw new DataSourceException(e);
         }
     }
 
@@ -45,7 +47,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
     }
 
     @Override
-    public User getByLogin(String login) {
+    public User getByLogin(String login) throws DataSourceException {
         User user = null;
         try (Connection conn = dataSource.getConnection();
              PreparedStatement psRegister = conn.prepareStatement(SELECT_USER_BY_LOGIN)
@@ -57,7 +59,27 @@ public class UserRepositoryJdbcImpl implements UserRepository {
             if (rs.next()) {
                 user = userByRs(rs);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            throw new DataSourceException(e);
+        }
+        return user;
+    }
+
+    @Override
+    public User getByEmail(String email) throws DataSourceException {
+        User user = null;
+        try (Connection conn = dataSource.getConnection();
+             PreparedStatement psRegister = conn.prepareStatement(SELECT_USER_BY_EMAIL)
+        ) {
+            psRegister.setString(1, email);
+
+            ResultSet rs = psRegister.executeQuery();
+
+            if (rs.next()) {
+                user = userByRs(rs);
+            }
+        } catch (SQLException e) {
+            throw new DataSourceException(e);
         }
         return user;
     }

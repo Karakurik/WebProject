@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.FileDownloadException;
 import ru.kpfu.webproject.fayzrakhmanov.services.BookService;
 
 import javax.servlet.ServletContext;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.Blob;
 
 import static ru.kpfu.webproject.fayzrakhmanov.constants.ServicesConstants.BOOK_SERVICE;
 
@@ -33,9 +33,10 @@ public class ReadBookServlet extends HttpServlet {
             String contentFileName = bookService.getBookContentFileNameById(bookId);
             response.setHeader("Content-Disposition", "filename=\"" + contentFileName + "\"");
             bookService.downloadFile(contentFileName, out);
-        } catch (IOException e) {
+        } catch (IOException | FileDownloadException e) {
             response.setContentType("text/html");
-            response.getWriter().println("<H1>Файл не найден</H1>");
+            request.setAttribute("message", "Не удалось открыть файл");
+            request.getRequestDispatcher("/pages/readBook.jsp").forward(request, response);
         }
     }
 }

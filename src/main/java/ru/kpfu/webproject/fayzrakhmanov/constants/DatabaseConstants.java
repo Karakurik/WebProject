@@ -31,6 +31,7 @@ public class DatabaseConstants {
      * Поля таблицы Author
      */
     private static String FIO_FIELD_AUTHOR_TABLE = "fio";
+    private static String BIRTHDAY_FIELD_AUTHOR_TABLE = "birthday";
 
     private static String NAME_FIELD = "name";
 
@@ -48,6 +49,11 @@ public class DatabaseConstants {
             "SELECT * " +
             "FROM " + SCHEMA + USER_TABLE + " " +
             "WHERE " + LOGIN_FIELD_USER_TABLE + " = ?";
+
+    public static String SELECT_USER_BY_EMAIL = "" +
+            "SELECT * " +
+            "FROM " + SCHEMA + USER_TABLE + " " +
+            "WHERE " + EMAIL_FIELD_USER_TABLE + " = ?";
 
     public static String REGISTER_USER = "" +
             "INSERT INTO " +
@@ -108,7 +114,13 @@ public class DatabaseConstants {
             "FROM " + SCHEMA + PUBLISHER_TABLE + " " +
             "WHERE " + NAME_FIELD + " = ?";
 
-    public static String INSERT_GENRE =
+    public static String INSERT_AUTHOR = "" +
+            "INSERT INTO " + SCHEMA + AUTHOR_TABLE +
+            " (" + FIO_FIELD_AUTHOR_TABLE + " " +
+            BIRTHDAY_FIELD_AUTHOR_TABLE + ") " +
+                "VALUES (?, 0000-00-00);";
+
+    public static String INSERT_GENRE = "" +
             "INSERT INTO " + SCHEMA + GENRE_TABLE + " (" + NAME_FIELD + ") " +
                     "VALUES (?);";
 

@@ -1,8 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.InvalidEmailException;
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.OccupiedLoginException;
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.WeakPasswordException;
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.*;
 import ru.kpfu.webproject.fayzrakhmanov.entity.User;
 import ru.kpfu.webproject.fayzrakhmanov.services.SecurityService;
 
@@ -49,19 +47,28 @@ public class RegistrationServlet extends HttpServlet {
             c.setMaxAge(60*60*24*365);
             response.addCookie(c);
 
-            response.sendRedirect("/books");
+            response.sendRedirect(context.getContextPath() + "/books");
+            return;
         } catch (InvalidEmailException e){
             request.setAttribute("message", "Неверный email");
         } catch (OccupiedLoginException e){
+            request.setAttribute("message", "Логин занят");
+        } catch (OccupiedEmailException e) {
             request.setAttribute("message", "Email уже зарегистрирован");
         } catch (WeakPasswordException e){
             request.setAttribute("message", "Пароль слишком короткий(мин. 5 символов)");
+        } catch (RegistrationException e) {
+            request.setAttribute("message", "Ошибка при регистрации, попробуйте позже");
         }
+        request.getRequestDispatcher("/pages/registration.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (securityService.isAuthenticated(request, request.getSession())) {
-            securityService.logout(request, response, request.getSession());
+        try {
+            if (securityService.isAuthenticated(request, request.getSession())) {
+                securityService.logout(request, response, request.getSession());
+            }
+        } catch (AutentificatedException ignored) {
         }
         context.getRequestDispatcher("/pages/registration.jsp").forward(request, response);
     }

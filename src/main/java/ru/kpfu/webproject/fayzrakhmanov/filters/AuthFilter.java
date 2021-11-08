@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.filters;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.AutentificatedException;
 import ru.kpfu.webproject.fayzrakhmanov.services.SecurityService;
 
 import javax.servlet.*;
@@ -35,32 +36,35 @@ public class AuthFilter implements Filter {
             return;
         }
 
-        if (securityService.isAuthenticated(request, request.getSession())) {
-            request.setAttribute(AUTH, true);
-            //если не админ, то не пускаем в панель
-            if (request.getRequestURI().startsWith("/crudPanel") && !securityService.isAdmin(request)) {
-                response.sendRedirect("/books");
-                return;
-            }
-            filterChain.doFilter(request, response);
-        } else {
-            request.setAttribute(AUTH, false);
-            boolean isProtected = false;
-            for(String s : protectedPaths){
-                if(request.getRequestURI().startsWith(s)){
-                    isProtected = true;
+        try {
+            if (securityService.isAuthenticated(request, request.getSession())) {
+                request.setAttribute(AUTH, true);
+                //если не админ, то не пускаем в панель
+                if (request.getRequestURI().startsWith("/crudPanel") && !securityService.isAdmin(request)) {
+                    response.sendRedirect("/books");
+                    return;
                 }
-            }
-            if(!isProtected){
                 filterChain.doFilter(request, response);
-                return;
+            } else {
+                request.setAttribute(AUTH, false);
+                boolean isProtected = false;
+                for(String s : protectedPaths){
+                    if(request.getRequestURI().startsWith(s)){
+                        isProtected = true;
+                    }
+                }
+                if(!isProtected){
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+                response.sendRedirect("/login");
             }
-            response.sendRedirect("/login");
+        } catch (AutentificatedException ignored) {
         }
     }
 
     @Override
     public void destroy() {
-
+        Filter.super.destroy();
     }
 }

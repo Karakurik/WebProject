@@ -1,6 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.Exceptions;
 
-public class NoSuchLoginException extends RuntimeException{
+public class NoSuchLoginException extends Exception{
     public NoSuchLoginException() {
     }
 

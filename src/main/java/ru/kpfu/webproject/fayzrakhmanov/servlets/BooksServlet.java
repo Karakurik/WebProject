@@ -1,7 +1,5 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
-import org.omg.CosNaming.BindingIterator;
-import ru.kpfu.webproject.fayzrakhmanov.constants.ServicesConstants;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.services.BookService;
 import ru.kpfu.webproject.fayzrakhmanov.services.GenreService;
@@ -49,8 +47,7 @@ public class BooksServlet extends HttpServlet {
         long genreId = 0L;
         try {
             genreId = Long.parseLong(request.getParameter("genre_id"));
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        } catch (Exception ignored) {
         }
         request.setAttribute("genreId", genreId);
         List<Book> list = bookService.getBooksByGenre(genreId);

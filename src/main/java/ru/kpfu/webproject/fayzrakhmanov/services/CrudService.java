@@ -1,8 +1,12 @@
 package ru.kpfu.webproject.fayzrakhmanov.services;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.CreateBookFailedException;
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DeleteBookFailedException;
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.UpdateBookFailedException;
+
 public interface CrudService<T> {
-    String create(T entity);
-    void update(T entity);
-    void delete(T entity);
-    void delete(int id);
+    void create(T entity) throws CreateBookFailedException;
+    void update(T entity) throws UpdateBookFailedException;
+    void delete(T entity) throws DeleteBookFailedException;
+    void delete(int id) throws DeleteBookFailedException;
 }

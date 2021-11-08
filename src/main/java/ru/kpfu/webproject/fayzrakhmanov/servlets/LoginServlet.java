@@ -1,5 +1,7 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.AutentificatedException;
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.AuthorizeException;
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.NoSuchLoginException;
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.WrongPasswordException;
 import ru.kpfu.webproject.fayzrakhmanov.services.SecurityService;
@@ -35,24 +37,32 @@ public class LoginServlet extends HttpServlet {
         String password = request.getParameter(PASSWORD);
 
         try {
-            securityService.authorize(login, password, request.getSession());
+            login = securityService.authorize(login, password, request.getSession());
 
             Cookie c = new Cookie(SecurityService.AUTH_COOKIE_NAME, login);
             c.setMaxAge(60*60*24*365);
             response.addCookie(c);
 
             response.sendRedirect(context.getContextPath() + "/books");
+            return;
         } catch (NoSuchLoginException e) {
             request.setAttribute("message", "Пользователь не найден");
         } catch (WrongPasswordException e) {
-            request.setAttribute("message", "Догин или пароль неверный");
+            request.setAttribute("message", "Логин или пароль неверный");
+        } catch (AuthorizeException e) {
+            request.setAttribute("message", "Не удалось войти, попробуйте позже");
         }
+        context.getRequestDispatcher("/pages/login.jsp").forward(request, response);
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        if (securityService.isAuthenticated(request, request.getSession())) {
-            securityService.logout(request, response, request.getSession());
+        try {
+            if (securityService.isAuthenticated(request, request.getSession())) {
+                securityService.logout(request, response, request.getSession());
+            }
+        } catch (AutentificatedException ignored) {
+
         }
         context.getRequestDispatcher("/pages/login.jsp").forward(request, response);
     }

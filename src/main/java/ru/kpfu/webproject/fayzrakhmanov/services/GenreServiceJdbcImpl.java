@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.services;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DataSourceException;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Genre;
 import ru.kpfu.webproject.fayzrakhmanov.repositories.GenreRepository;
 
@@ -13,7 +14,7 @@ public class GenreServiceJdbcImpl implements GenreService {
     }
 
     @Override
-    public List<Genre> getGenreList() {
+    public List<Genre> getGenreList() throws DataSourceException {
         return genreRepository.getGenreList();
     }
 }

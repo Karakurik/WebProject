@@ -18,10 +18,9 @@ public class ShowImageServlet extends HttpServlet {
 
     }
 
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         response.setContentType("image/jpeg");
-        OutputStream out = response.getOutputStream();
-        try {
+        try (OutputStream out = response.getOutputStream()){
             int index = Integer.valueOf(request.getParameter("index"));
 
             List<Book> list = (ArrayList<Book>)request.getSession(false).getAttribute("currentBookList");
@@ -30,13 +29,7 @@ public class ShowImageServlet extends HttpServlet {
                 response.setContentLength(book.getImage().length);
                 out.write(book.getImage());
             }
-        } finally {
-            out.close();
+        } catch (IOException ignored) {
         }
-    }
-
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
     }
 }

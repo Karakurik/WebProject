@@ -1,6 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.Exceptions;
 
-public class WeakPasswordException extends RuntimeException {
+public class WeakPasswordException extends Exception {
     public WeakPasswordException() {
     }
 

@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.repositories;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DataSourceException;
 import ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Author;
 
@@ -21,7 +22,7 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
         this.dataSource = dataSource;
     }
 
-    private List<Author> getAuthors(String query) {
+    private List<Author> getAuthors(String query) throws DataSourceException {
         List<Author> authorList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
             Statement stmt = conn.createStatement()){
@@ -31,13 +32,14 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
                 author.setName(rs.getString("fio"));
                 authorList.add(author);
             }
-        } catch (SQLException ignored) {
+        } catch (SQLException e) {
+            throw new DataSourceException(e);
         }
         return authorList;
     }
 
     @Override
-    public List<Author> getAuthorList() {
+    public List<Author> getAuthorList() throws DataSourceException {
         return getAuthors(SELECT_AUTHOR);
     }
 

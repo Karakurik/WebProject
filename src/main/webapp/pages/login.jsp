@@ -5,7 +5,7 @@
     <div class="login_div">
         <p class="title">Вход:<br><a href="/registration">Создать аккаунт?</a></p>
         <form class="login_form" name="username" method="POST">
-            <input type="text" name="login" value="" size="20" placeholder="Логин" />
+            <input type="text" name="login" value="" size="20" placeholder="Логин или email" />
             <br>
             <input type="password" name="password" value="" size="20" placeholder="Пароль" />
             <br>

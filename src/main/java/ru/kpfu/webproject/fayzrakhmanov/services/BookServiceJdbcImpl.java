@@ -1,9 +1,11 @@
 package ru.kpfu.webproject.fayzrakhmanov.services;
 
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.*;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.repositories.BookRepository;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.sql.Blob;
 import java.util.List;
@@ -36,27 +38,32 @@ public class BookServiceJdbcImpl implements BookService {
     }
 
     @Override
-    public String create(Book entity) {
-        return bookRepository.create(entity);
+    public void create(Book entity) throws CreateBookFailedException {
+        bookRepository.create(entity);
     }
 
     @Override
-    public void update(Book entity) {
+    public void update(Book entity) throws UpdateBookFailedException {
         bookRepository.update(entity);
     }
 
     @Override
-    public void delete(Book entity) {
+    public void delete(Book entity) throws DeleteBookFailedException {
         bookRepository.delete(entity);
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws DeleteBookFailedException {
         bookRepository.delete(id);
     }
 
     @Override
-    public void downloadFile(String fileName, OutputStream responseOutputStream) throws IOException {
+    public void downloadFile(String fileName, OutputStream responseOutputStream) throws FileDownloadException {
         bookRepository.downloadFile(fileName, responseOutputStream);
+    }
+
+    @Override
+    public void uploadFile(String submittedFileName, InputStream inputStream) throws FileUploadException {
+        bookRepository.uploadFile(submittedFileName, inputStream);
     }
 }

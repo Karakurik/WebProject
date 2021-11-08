@@ -5,6 +5,7 @@
 <html>
 <head>
     <t:head_books/>
+    <title>${title}</title>
 </head>
 <body>
     <div class="container">
