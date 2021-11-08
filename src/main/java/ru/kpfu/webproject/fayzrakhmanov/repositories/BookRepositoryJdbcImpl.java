@@ -5,13 +5,17 @@ import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 
 import javax.sql.DataSource;
 import javax.sql.rowset.serial.SerialBlob;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import static ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants.SELECT_BOOK;
-import static ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants.SELECT_BOOK_CONTENT_BY_ID;
+import static ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants.*;
 
 public class BookRepositoryJdbcImpl implements BookRepository {
     private DataSource dataSource;
@@ -22,8 +26,9 @@ public class BookRepositoryJdbcImpl implements BookRepository {
 
     private static Book bookByRs(ResultSet rs) throws SQLException {
         Book book = new Book();
-        book.setId(rs.getLong("id"));
+        book.setId(rs.getInt("id"));
         book.setName(rs.getString("name"));
+        book.setContentFileName(rs.getString("content"));
         book.setGenre(rs.getString("genre"));
         book.setIsbn(rs.getString("isbn"));
         book.setAuthor(rs.getString("author"));
@@ -65,19 +70,23 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     }
 
     @Override
-    public Blob getBookContentById(long id) {
+    public String getBookContentById(long id) {
         try (Connection conn = dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_BOOK_CONTENT_BY_ID)) {
             ps.setLong(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                byte[] bytes = rs.getBytes("content");
-                return new SerialBlob(bytes);
+                return rs.getString("content");
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public Book selectBook(int id) {
+        return getAllBooks().stream().filter(o -> o.getId()==id).findFirst().get();
     }
 
     @Override
@@ -199,7 +208,8 @@ public class BookRepositoryJdbcImpl implements BookRepository {
 
     @Override
     public void update(Book entity) {
-
+        delete(entity.getId());
+        create(entity);
     }
 
     @Override
@@ -233,5 +243,10 @@ public class BookRepositoryJdbcImpl implements BookRepository {
             } catch (SQLException ignored) {
             }
         }
+    }
+
+    @Override
+    public void downloadFile(String fileName, OutputStream outputStream) throws IOException {
+        Files.copy(Paths.get(BOOKS_FILES_PATH + fileName), outputStream);
     }
 }

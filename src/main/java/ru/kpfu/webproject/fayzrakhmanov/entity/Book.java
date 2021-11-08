@@ -5,9 +5,9 @@ import java.util.Arrays;
 
 public class Book implements Serializable {
 
-    private long id;
+    private int id;
     private String name;
-    private byte[] content;
+    private String contentFileName;
     private int pageCount;
     private String isbn;
     private String genre;
@@ -16,11 +16,11 @@ public class Book implements Serializable {
     private String publisher;
     private byte[] image;
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -32,12 +32,12 @@ public class Book implements Serializable {
         this.name = name;
     }
 
-    public byte[] getContent() {
-        return content;
+    public String getContentFileName() {
+        return contentFileName;
     }
 
-    public void setContent(byte[] content) {
-        this.content = content;
+    public void setContentFileName(String contentFileName) {
+        this.contentFileName = contentFileName;
     }
 
     public int getPageCount() {
@@ -107,7 +107,8 @@ public class Book implements Serializable {
         if (pageCount != book.pageCount) return false;
         if (publishDate != book.publishDate) return false;
         if (name != null ? !name.equals(book.name) : book.name != null) return false;
-        if (!Arrays.equals(content, book.content)) return false;
+        if (contentFileName != null ? !contentFileName.equals(book.contentFileName) : book.contentFileName != null)
+            return false;
         if (isbn != null ? !isbn.equals(book.isbn) : book.isbn != null) return false;
         if (genre != null ? !genre.equals(book.genre) : book.genre != null) return false;
         if (author != null ? !author.equals(book.author) : book.author != null) return false;
@@ -117,9 +118,9 @@ public class Book implements Serializable {
 
     @Override
     public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
+        int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + Arrays.hashCode(content);
+        result = 31 * result + (contentFileName != null ? contentFileName.hashCode() : 0);
         result = 31 * result + pageCount;
         result = 31 * result + (isbn != null ? isbn.hashCode() : 0);
         result = 31 * result + (genre != null ? genre.hashCode() : 0);

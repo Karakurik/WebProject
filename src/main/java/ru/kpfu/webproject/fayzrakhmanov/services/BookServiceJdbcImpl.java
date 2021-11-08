@@ -3,6 +3,8 @@ package ru.kpfu.webproject.fayzrakhmanov.services;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.repositories.BookRepository;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.sql.Blob;
 import java.util.List;
 
@@ -24,13 +26,13 @@ public class BookServiceJdbcImpl implements BookService {
     }
 
     @Override
-    public Blob getBookContentById(long id) {
+    public String getBookContentFileNameById(long id) {
         return bookRepository.getBookContentById(id);
     }
 
     @Override
     public Book selectBook(int id) {
-        return null;
+        return bookRepository.selectBook(id);
     }
 
     @Override
@@ -51,5 +53,10 @@ public class BookServiceJdbcImpl implements BookService {
     @Override
     public void delete(int id) {
         bookRepository.delete(id);
+    }
+
+    @Override
+    public void downloadFile(String fileName, OutputStream responseOutputStream) throws IOException {
+        bookRepository.downloadFile(fileName, responseOutputStream);
     }
 }

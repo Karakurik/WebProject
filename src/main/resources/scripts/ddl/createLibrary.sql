@@ -32,6 +32,7 @@ CREATE TABLE `book` (
 	CONSTRAINT `fk_genre` FOREIGN KEY (`genre_id`) REFERENCES `genre` (`id`) ON UPDATE CASCADE
 );
 alter table book add constraint unique (isbn);
+ALTER TABLE library.book MODIFY content VARCHAR(32);
 
 CREATE TABLE `publisher` (
 	`id` bigint(20) NOT NULL AUTO_INCREMENT,

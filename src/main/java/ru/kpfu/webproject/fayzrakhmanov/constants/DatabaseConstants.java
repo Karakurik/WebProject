@@ -8,6 +8,8 @@ public class DatabaseConstants {
 
     public static final String DATA_SOURSE = "dataSourse";
 
+    public static final String BOOKS_FILES_PATH = "D:\\java-projects\\Semestrovka1\\WebProject\\src\\main\\webapp\\resources\\files\\";
+
     private static String SCHEMA = "library.";
 
     private static String USER_TABLE = "libraryuser";
@@ -68,7 +70,7 @@ public class DatabaseConstants {
             "ORDER BY " + NAME_FIELD;*/
 
     public static String SELECT_BOOK = "" +
-            "SELECT b.id, b.name, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
+            "SELECT b.id, b.name, b.content, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
             "FROM " + SCHEMA + BOOK_TABLE + " b " +
             "INNER JOIN library.author_book ab on b.id=ab.book_id " +
             "INNER JOIN library.author a on a.id=ab.author_id " +
@@ -77,7 +79,7 @@ public class DatabaseConstants {
             "ORDER BY b.id";
 
     public static String SELECT_BOOK_BY_GENRE = "" +
-            "SELECT b.id, b.name, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
+            "SELECT b.id, b.name, b.content, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
             "FROM " + SCHEMA + BOOK_TABLE + " b " +
             "INNER JOIN library.author_book ab on b.id=ab.book_id " +
             "INNER JOIN library.author a on a.id=ab.author_id " +

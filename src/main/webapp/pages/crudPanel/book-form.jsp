@@ -74,7 +74,7 @@
           </fieldset>
 
           <fieldset class="form-group">
-            <label>Publish Year</label> <input type="number" value="<c:out value='${book.getDate()}' />" class="form-control" name="publish_date">
+            <label>Publish Year</label> <input type="number" value="<c:out value='${book.getPublishDate()}' />" class="form-control" name="publish_date">
           </fieldset>
 
           <fieldset class="form-group">

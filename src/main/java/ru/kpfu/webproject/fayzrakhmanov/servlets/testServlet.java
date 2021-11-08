@@ -1,5 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
+import com.mysql.cj.jdbc.Blob;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.services.BookService;
 
@@ -9,6 +10,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
 

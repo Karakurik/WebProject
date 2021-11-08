@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 @WebServlet("/ShowImageServlet")
 public class ShowImageServlet extends HttpServlet {
@@ -23,7 +24,7 @@ public class ShowImageServlet extends HttpServlet {
         try {
             int index = Integer.valueOf(request.getParameter("index"));
 
-            ArrayList<Book> list = (ArrayList<Book>)request.getSession(false).getAttribute("currentBookList");
+            List<Book> list = (ArrayList<Book>)request.getSession(false).getAttribute("currentBookList");
             Book book = list.get(index);
             if (book.getImage() != null) {
                 response.setContentLength(book.getImage().length);

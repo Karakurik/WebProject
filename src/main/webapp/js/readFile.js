@@ -1,3 +1,5 @@
+document.addEventListener("DOMContentLoaded", test)
+
 function test() {
     document.writeln("erftvg")
     alert("adsfdg")

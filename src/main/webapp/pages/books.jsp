@@ -3,14 +3,20 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <t:layout_books title="Книги2">
     <div class="book_list">
-        <h3>${param.name}</h3>
+        <c:if test="${!list.isEmpty()}">
+            <h3>${param.name}</h3>
+        </c:if>
+        <c:if test="${list.isEmpty()}">
+            <h3>${param.name} не найдены</h3>
+        </c:if>
         <c:forEach var="book" items="${list}">
             <div class="book_info">
                 <div class="book_title">
-                    <p> ${book.getName()}</p>
+                    <p>${book.getName()}</p>
                 </div>
                 <div class="book_image">
-                    <img src="${request.getContextPath()}/ShowImageServlet?index=${list.indexOf(book)}" height="250" width="190" alt="Обложка"/>
+                    <img src="${request.getContextPath()}/ShowImageServlet?index=${list.indexOf(book)}" height="250"
+                         width="190" alt="Обложка"/>
                 </div>
                 <div class="book_details">
                     <br><strong>ISBN:</strong> ${book.getIsbn()}
@@ -19,7 +25,7 @@
                     <br><strong>Количество страниц:</strong> ${book.getPageCount()}
                     <br><strong>Год издания:</strong> ${book.getPublishDate()}
                     <br><strong>Автор:</strong> ${book.getAuthor()}
-                    <p style="margin:10px;"> <a href="readBook?id:${book.getId()}">Читать</a></p>
+                    <p style="margin:10px;"><a href="readBook?id=${book.getId()}">Читать</a></p>
                 </div>
             </div>
         </c:forEach>

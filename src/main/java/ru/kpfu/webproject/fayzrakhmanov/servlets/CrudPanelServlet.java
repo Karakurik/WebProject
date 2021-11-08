@@ -45,13 +45,13 @@ public class CrudPanelServlet extends HttpServlet {
                     insertBook(request, response);
                     break;
                 case "/crudPanel/delete":
-                    deleteUser(request, response);
+                    deleteBook(request, response);
                     break;
                 case "/crudPanel/edit":
                     showEditForm(request, response);
                     break;
                 case "/crudPanel/update":
-                    updateUser(request, response);
+                    updateBook(request, response);
                     break;
                 default:
                     listUser(request, response);
@@ -106,7 +106,7 @@ public class CrudPanelServlet extends HttpServlet {
         return book;
     }
 
-    private void updateUser(HttpServletRequest request, HttpServletResponse response)
+    private void updateBook(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
 
         Book book = getBookByParametres(request, response);
@@ -115,7 +115,7 @@ public class CrudPanelServlet extends HttpServlet {
         response.sendRedirect("/crudPanel");
     }
 
-    private void deleteUser(HttpServletRequest request, HttpServletResponse response)
+    private void deleteBook(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException {
         int id = Integer.parseInt(request.getParameter("id"));
         bookService.delete(id);
