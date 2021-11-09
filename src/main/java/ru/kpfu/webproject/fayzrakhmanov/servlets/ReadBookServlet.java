@@ -28,7 +28,7 @@ public class ReadBookServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/pdf");
-        try (OutputStream out = response.getOutputStream()){
+        try (OutputStream out = response.getOutputStream()) {
             long bookId = Long.parseLong(request.getParameter("id"));
             String contentFileName = bookService.getBookContentFileNameById(bookId);
             response.setHeader("Content-Disposition", "filename=\"" + contentFileName + "\"");

@@ -22,7 +22,7 @@ public class GenreRepositoryJdbcImpl implements GenreRepository {
     private List<Genre> getGenres() throws DataSourceException {
         List<Genre> genreList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-            Statement stmt = conn.createStatement()){
+             Statement stmt = conn.createStatement()) {
 
             ResultSet rs = stmt.executeQuery(DatabaseConstants.SELECT_GENRE);
             while (rs.next()) {

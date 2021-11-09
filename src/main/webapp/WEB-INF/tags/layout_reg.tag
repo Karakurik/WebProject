@@ -8,9 +8,9 @@
     <t:head_reg/>
 </head>
 <body>
-    <div class="main">
-        <t:header_reg/>
-        <jsp:doBody/>
-    </div>
+<div class="main">
+    <t:header_reg/>
+    <jsp:doBody/>
+</div>
 </body>
 </html>

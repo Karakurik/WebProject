@@ -6,7 +6,9 @@
     <h4>Жанры:</h4>
     <ul class="nav">
         <c:forEach items="${genreService.getGenreList()}" var="genre">
-            <li><a href="<c:url value="books?genre_id=${genre.getId()}&name=${genre.getName()}"/>">${genre.getName()}</a></li>
+            <li>
+                <a href="<c:url value="books?genre_id=${genre.getId()}&name=${genre.getName()}"/>">${genre.getName()}</a>
+            </li>
         </c:forEach>
     </ul>
 </div>

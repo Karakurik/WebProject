@@ -86,11 +86,11 @@ public class BookRepositoryJdbcImpl implements BookRepository {
 
     @Override
     public Book selectBook(int id) {
-        return getAllBooks().stream().filter(o -> o.getId() == id).findFirst().get();
+        return getAllBooks().stream().filter(o -> o.getId() == id).findFirst().orElse(null);
     }
 
     @Override
-    public void create(Book entity) throws CreateBookFailedException {
+    public void create(Book entity) throws CreateBookFailedException, IsbnAlreadyExistsException, UnrealPublishDateException {
         if (entity != null) {
             try (Connection conn = dataSource.getConnection()) {
                 if (validateBook(entity)) {
@@ -99,7 +99,9 @@ public class BookRepositoryJdbcImpl implements BookRepository {
                     int genreId = 0;
                     int publisherId = 0;
                     try {
-                        //Проверяем, существует ли автор в БД
+                        //Проверяем не занят ли isbn другой книгой
+                        checkIsbn(entity);
+                        //Проверяем, существует ли автор в БД, иначе добавляем
                         PreparedStatement psSelectAuthor = conn.prepareStatement(SELECT_AUTHOR_BY_FIO);
                         psSelectAuthor.setString(1, authorFIO);
                         ResultSet rsSelectAuthor = psSelectAuthor.executeQuery();
@@ -115,7 +117,7 @@ public class BookRepositoryJdbcImpl implements BookRepository {
                             }
                         }
 
-                        //Проверяем, существует ли жанр
+                        //Проверяем, существует ли жанр, иначе добавляем
                         PreparedStatement psSelectGenre = conn.prepareStatement(SELECT_GENRE_BY_NAME);
                         psSelectGenre.setString(1, entity.getGenre());
                         ResultSet rsSelectGenre = psSelectGenre.executeQuery();
@@ -131,7 +133,7 @@ public class BookRepositoryJdbcImpl implements BookRepository {
                             }
                         }
 
-                        //Проверяем, существует ли издательство
+                        //Проверяем, существует ли издательство, иначе добавляем
                         PreparedStatement psSelectPublisher = conn.prepareStatement(SELECT_PUBLISHER_BY_NAME);
                         psSelectPublisher.setString(1, entity.getPublisher());
                         ResultSet rsSelectPublisher = psSelectPublisher.executeQuery();
@@ -188,7 +190,11 @@ public class BookRepositoryJdbcImpl implements BookRepository {
         }
     }
 
-    public static boolean validateBook(Book book) {
+    @Override
+    public boolean validateBook(Book book) throws UnrealPublishDateException {
+        if (book != null && book.getPublishDate() > Calendar.getInstance().getWeekYear()) {
+            throw new UnrealPublishDateException();
+        }
         return book != null
                 && book.getName() != null
                 && !book.getName().isEmpty()
@@ -198,7 +204,6 @@ public class BookRepositoryJdbcImpl implements BookRepository {
                 && book.getGenre() != null
                 && !book.getGenre().isEmpty()
                 && book.getPublishDate() > 1000
-                && book.getPublishDate() <= Calendar.getInstance().getWeekYear()
                 && book.getPublisher() != null
                 && !book.getPublisher().isEmpty()
                 && book.getAuthor() != null
@@ -207,7 +212,7 @@ public class BookRepositoryJdbcImpl implements BookRepository {
     }
 
     @Override
-    public void update(Book entity) throws UpdateBookFailedException {
+    public void update(Book entity) throws UpdateBookFailedException, IsbnAlreadyExistsException, UnrealPublishDateException {
         try {
             delete(entity.getId());
             create(entity);
@@ -269,6 +274,15 @@ public class BookRepositoryJdbcImpl implements BookRepository {
             Files.copy(inputStream, Paths.get(BOOKS_FILES_PATH + submittedFileName));
         } catch (IOException e) {
             throw new FileUploadException(e);
+        }
+    }
+
+    @Override
+    public void checkIsbn(Book entity) throws IsbnAlreadyExistsException {
+        for (Book b : getAllBooks()) {
+            if (b.getIsbn().equals(entity.getIsbn()) && b.getId() != entity.getId()) {
+                throw new IsbnAlreadyExistsException();
+            }
         }
     }
 }

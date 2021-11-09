@@ -18,7 +18,7 @@ public class LogoutServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        context=getServletContext();
+        context = getServletContext();
         securityService = (SecurityService) context.getAttribute(ServicesConstants.SECURITY_SERVICE);
     }
 

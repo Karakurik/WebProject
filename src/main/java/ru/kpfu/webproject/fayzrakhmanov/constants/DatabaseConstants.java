@@ -1,9 +1,5 @@
 package ru.kpfu.webproject.fayzrakhmanov.constants;
 
-/**
- * Шаблоны sql запросов к БД, подходит для MySQL
- * Для Postgres потребуется изменение синтаксиса!
- */
 public class DatabaseConstants {
 
     public static final String DATA_SOURSE = "dataSourse";
@@ -70,11 +66,6 @@ public class DatabaseConstants {
             "FROM " + SCHEMA + GENRE_TABLE + " " +
             "ORDER BY " + NAME_FIELD;
 
-    /*public static String SELECT_BOOK = "" +
-            "SELECT * " +
-            "FROM " + SCHEMA + BOOK_TABLE + " " +
-            "ORDER BY " + NAME_FIELD;*/
-
     public static String SELECT_BOOK = "" +
             "SELECT b.id, b.name, b.content, b.isbn, b.page_count, b.publish_year, p.name as publisher, a.fio as author, g.name as genre, b.image " +
             "FROM " + SCHEMA + BOOK_TABLE + " b " +
@@ -116,13 +107,12 @@ public class DatabaseConstants {
 
     public static String INSERT_AUTHOR = "" +
             "INSERT INTO " + SCHEMA + AUTHOR_TABLE +
-            " (" + FIO_FIELD_AUTHOR_TABLE + " " +
-            BIRTHDAY_FIELD_AUTHOR_TABLE + ") " +
-                "VALUES (?, 0000-00-00);";
+            " (" + FIO_FIELD_AUTHOR_TABLE + ") " +
+            "VALUES (?);";
 
     public static String INSERT_GENRE = "" +
             "INSERT INTO " + SCHEMA + GENRE_TABLE + " (" + NAME_FIELD + ") " +
-                    "VALUES (?);";
+            "VALUES (?);";
 
     public static String INSERT_PUBLISHER =
             "INSERT INTO " + SCHEMA + PUBLISHER_TABLE + " (" + NAME_FIELD + ") " +

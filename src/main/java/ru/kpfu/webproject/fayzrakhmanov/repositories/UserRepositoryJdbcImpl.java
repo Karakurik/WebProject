@@ -35,7 +35,7 @@ public class UserRepositoryJdbcImpl implements UserRepository {
     public List<User> findAll() {
         List<User> userList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-            Statement stmt = conn.createStatement()) {
+             Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(SELECT_ALL_USER);
             while (rs.next()) {
                 userList.add(userByRs(rs));

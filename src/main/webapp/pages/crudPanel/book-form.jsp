@@ -6,24 +6,23 @@
     <div class="container col-md-5">
         <div class="card">
             <div class="card-body">
-                <c:if test="${book != null}">
-                <form action="/crudPanel/update" method="post">
+                <c:if test="${update}">
+                <form action="<c:url value="/crudPanel/update"/>" method="post">
                     </c:if>
-                    <c:if test="${book == null}">
-                    <form action="/crudPanel/insert" method="post">
+                    <c:if test="${addNew}">
+                    <form action="<c:url value="/crudPanel/insert"/>" method="post" <%--enctype="multipart/form-data"--%>>
                         </c:if>
-
                         <caption>
                             <h2>
-                                <c:if test="${book != null}">
+                                <c:if test="${update}">
                                     Edit Book
                                 </c:if>
-                                <c:if test="${book == null}">
+                                <c:if test="${addNew}">
                                     Add New Book
                                 </c:if>
                             </h2>
                         </caption>
-                        <c:if test="${book != null}">
+                        <c:if test="${update}">
                             <input type="hidden" name="id" value="<c:out value='${book.getId()}' />"/>
                         </c:if>
 
@@ -33,7 +32,8 @@
                         </fieldset>
 
                         <fieldset class="form-group">
-                            <label>Page Count</label> <input type="number" value="<c:out value='${book.getPageCount()}' />"
+                            <label>Page Count</label> <input type="number"
+                                                             value="<c:out value='${book.getPageCount()}' />"
                                                              class="form-control" name="page_count" required="required">
                         </fieldset>
 
@@ -63,9 +63,11 @@
                                                             class="form-control" name="publisher">
                         </fieldset>
 
-                        <%--<fieldset class="form-group">
-                            <label>Content</label> <input type="file" name="file">
-                        </fieldset>--%>
+                            <%--<fieldset class="form-group">
+                                <label>Content</label> <input type="file" name="file">
+                            </fieldset>--%>
+
+                        <p style="color: red" class="message">${message}</p>
 
                         <button type="submit" class="btn btn-success">Save</button>
                     </form>

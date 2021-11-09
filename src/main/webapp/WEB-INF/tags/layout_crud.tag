@@ -10,7 +10,7 @@
 
 </head>
 <body>
-    <t:header_crud/>
-    <jsp:doBody/>
+<t:header_crud/>
+<jsp:doBody/>
 </body>
 </html>

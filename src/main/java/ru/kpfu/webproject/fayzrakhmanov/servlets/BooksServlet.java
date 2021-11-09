@@ -35,14 +35,9 @@ public class BooksServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
         request.setAttribute(SECURITY_SERVICE, securityService);
         request.setAttribute(BOOK_SERVICE, bookService);
-        if (securityService.isAdmin(request)) {
-            request.setAttribute("isAdmin", true);
-        } else {
-            request.setAttribute("isAdmin", false);
-        }
+        setAdmin(request, response);
 
         long genreId = 0L;
         try {
@@ -60,7 +55,8 @@ public class BooksServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String searchString = request.getParameter("search_String");
+        setAdmin(request, response);
+        String searchString = request.getParameter("search_string");
         String searchOption = request.getParameter("search_option");
         List<Book> list = bookService.getAllBooks();
         switch (searchOption) {
@@ -80,5 +76,13 @@ public class BooksServlet extends HttpServlet {
         request.getSession().setAttribute("currentBookList", list);
         request.setAttribute("list", list);
         context.getRequestDispatcher("/pages/books.jsp").forward(request, response);
+    }
+
+    private void setAdmin(HttpServletRequest request, HttpServletResponse response) {
+        if (securityService.isAdmin(request)) {
+            request.setAttribute("isAdmin", true);
+        } else {
+            request.setAttribute("isAdmin", false);
+        }
     }
 }

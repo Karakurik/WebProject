@@ -7,7 +7,7 @@
             <h3>${param.name}</h3>
         </c:if>
         <c:if test="${list.isEmpty()}">
-            <h3>${param.name} не найдены</h3>
+            <h3 style="color:red;">По запросу "${param.name}${param.search_string}" книги не найдены</h3>
         </c:if>
         <c:forEach var="book" items="${list}">
             <div class="book_info">

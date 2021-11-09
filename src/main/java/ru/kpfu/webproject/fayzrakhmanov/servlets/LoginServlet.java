@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
             login = securityService.authorize(login, password, request.getSession());
 
             Cookie c = new Cookie(SecurityService.AUTH_COOKIE_NAME, login);
-            c.setMaxAge(60*60*24*365);
+            c.setMaxAge(60 * 60 * 24 * 365);
             response.addCookie(c);
 
             response.sendRedirect(context.getContextPath() + "/books");

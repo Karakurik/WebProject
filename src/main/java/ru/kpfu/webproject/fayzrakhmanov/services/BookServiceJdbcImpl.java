@@ -4,10 +4,8 @@ import ru.kpfu.webproject.fayzrakhmanov.Exceptions.*;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.repositories.BookRepository;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.sql.Blob;
 import java.util.List;
 
 public class BookServiceJdbcImpl implements BookService {
@@ -38,12 +36,15 @@ public class BookServiceJdbcImpl implements BookService {
     }
 
     @Override
-    public void create(Book entity) throws CreateBookFailedException {
+    public void create(Book entity) throws CreateBookFailedException, IsbnAlreadyExistsException, UnrealPublishDateException {
         bookRepository.create(entity);
     }
 
     @Override
-    public void update(Book entity) throws UpdateBookFailedException {
+    public void update(Book entity) throws UpdateBookFailedException, IsbnAlreadyExistsException, UnrealPublishDateException {
+        bookRepository.checkIsbn(entity);
+        //Если нет исключения
+        bookRepository.validateBook(entity);
         bookRepository.update(entity);
     }
 

@@ -21,9 +21,9 @@ public class ShowImageServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         response.setContentType("image/jpeg");
         try (OutputStream out = response.getOutputStream()){
-            int index = Integer.valueOf(request.getParameter("index"));
+            int index = Integer.parseInt(request.getParameter("index"));
 
-            List<Book> list = (ArrayList<Book>)request.getSession(false).getAttribute("currentBookList");
+            List<Book> list = (List<Book>)request.getSession(false).getAttribute("currentBookList");
             Book book = list.get(index);
             if (book.getImage() != null) {
                 response.setContentLength(book.getImage().length);

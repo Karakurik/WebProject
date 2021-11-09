@@ -1,10 +1,8 @@
 package ru.kpfu.webproject.fayzrakhmanov.repositories;
 
 import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DataSourceException;
-import ru.kpfu.webproject.fayzrakhmanov.constants.DatabaseConstants;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Author;
 
-import javax.management.Query;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -25,7 +23,7 @@ public class AuthorRepositoryJdbcImpl implements AuthorRepository {
     private List<Author> getAuthors(String query) throws DataSourceException {
         List<Author> authorList = new ArrayList<>();
         try (Connection conn = dataSource.getConnection();
-            Statement stmt = conn.createStatement()){
+             Statement stmt = conn.createStatement()) {
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
                 Author author = new Author();

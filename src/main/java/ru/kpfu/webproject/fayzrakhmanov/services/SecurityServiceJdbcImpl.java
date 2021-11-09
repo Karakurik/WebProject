@@ -16,12 +16,8 @@ import static ru.kpfu.webproject.fayzrakhmanov.constants.ServletsConstants.USER;
 
 
 public class SecurityServiceJdbcImpl implements SecurityService {
-
     private UserRepository userRepository;
-
     private PasswordEncoder passwordEncoder;
-
-//    private Logger logger;    
 
     public SecurityServiceJdbcImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
@@ -68,7 +64,7 @@ public class SecurityServiceJdbcImpl implements SecurityService {
             for (Cookie c : cookies) {
                 if (c.getName().equals(AUTH_COOKIE_NAME)) {
                     if (!c.getValue().equals("null")) {
-                        User user = null;
+                        User user;
                         try {
                             user = userRepository.getByLogin(c.getValue());
                         } catch (DataSourceException e) {

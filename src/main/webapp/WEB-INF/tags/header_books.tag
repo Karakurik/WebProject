@@ -3,11 +3,11 @@
 
 <div class="header">
     <div class="logo">
-        <img class="logo" src="/resources/images/book.jpg" alt="Логотип" name="logo"/>
+        <img class="logo" src="<c:url value="/resources/images/book.jpg"/>" alt="Логотип" name="logo"/>
     </div>
     <div class="descr">
         <h3>
-            Привет, друг! Это наша онлайн библиотека ИТИС
+            Привет, друг! Это наша онлайн библиотека
             <c:if test="${requestScope.auth == true}">
                 <a style="color: #84bbf3" href="logout">Выйти</a>
             </c:if>
@@ -15,15 +15,12 @@
             <c:if test="${requestScope.isAdmin == true}">
                 <a style="color: #84bbf3" href="crudPanel">АдминПанель</a>
             </c:if>
-            <%--<c:if test="${requestScope.auth == false}">
-                <a style="color: #84bbf3" href="login">Выйти</a>
-            </c:if>--%>
         </h3>
     </div>
 
     <div class="search_form">
         <form name="search_form" action="books" method="POST">
-            <input type="text" name="search_String" value="" size="110"/>
+            <input type="text" name="search_string" value="${param.search_string}" size="110"/>
             <input class="search_button" type="submit" value="Поиск" name="search_button"/>
             <select name="search_option">
                 <option>Название</option>

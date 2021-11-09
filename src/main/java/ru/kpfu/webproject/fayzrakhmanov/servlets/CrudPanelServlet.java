@@ -1,9 +1,6 @@
 package ru.kpfu.webproject.fayzrakhmanov.servlets;
 
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.CreateBookFailedException;
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.DeleteBookFailedException;
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.FileUploadException;
-import ru.kpfu.webproject.fayzrakhmanov.Exceptions.UpdateBookFailedException;
+import ru.kpfu.webproject.fayzrakhmanov.Exceptions.*;
 import ru.kpfu.webproject.fayzrakhmanov.constants.ServicesConstants;
 import ru.kpfu.webproject.fayzrakhmanov.entity.Book;
 import ru.kpfu.webproject.fayzrakhmanov.services.BookService;
@@ -78,6 +75,7 @@ public class CrudPanelServlet extends HttpServlet {
 
     private void showNewForm(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setAttribute("addNew", true);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/crudPanel/book-form.jsp");
         dispatcher.forward(request, response);
     }
@@ -88,20 +86,28 @@ public class CrudPanelServlet extends HttpServlet {
         Book existingBook = bookService.selectBook(id);
         RequestDispatcher dispatcher = request.getRequestDispatcher("/pages/crudPanel/book-form.jsp");
         request.setAttribute("book", existingBook);
+        request.setAttribute("update", true);
         dispatcher.forward(request, response);
     }
 
     private void insertBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         try {
-//             TODO: 09.11.2021
+            Book book = getBookByParametres(request, response);
+            request.setAttribute("book", book);
 //            bookService.uploadFile(part.getSubmittedFileName(), part.getInputStream());
-            bookService.create(getBookByParametres(request,response));
-
+            bookService.create(book);
             response.sendRedirect("/crudPanel");
+            return;
         } catch (CreateBookFailedException | FileUploadException e) {
-            // TODO: 08.11.2021
+            request.setAttribute("message", "Не удалось добавить");
+        } catch (IsbnAlreadyExistsException e) {
+            request.setAttribute("message", "Книга с таким Isbn уже существует");
+        } catch (UnrealPublishDateException e) {
+            request.setAttribute("message", "Укажите правильный год публикации");
         }
+        request.setAttribute("addNew", true);
+        showNewForm(request, response);
     }
 
     private Book getBookByParametres(HttpServletRequest request, HttpServletResponse response) throws FileUploadException {
@@ -124,15 +130,22 @@ public class CrudPanelServlet extends HttpServlet {
     }
 
     private void updateBook(HttpServletRequest request, HttpServletResponse response)
-            throws SQLException, IOException {
+            throws SQLException, IOException, ServletException {
         try {
             Book book = getBookByParametres(request, response);
             book.setId(Integer.parseInt(request.getParameter("id")));
             bookService.update(book);
             response.sendRedirect("/crudPanel");
+            return;
         } catch (FileUploadException | UpdateBookFailedException e) {
-//             TODO: 08.11.2021
+            request.setAttribute("message", "Не удалось и изменить");
+        } catch (IsbnAlreadyExistsException e) {
+            request.setAttribute("message", "Isbn, которую вы хотите указать, занят другой книгой");
+        } catch (UnrealPublishDateException e) {
+            request.setAttribute("message", "Укажите правильный год публикации");
         }
+        request.setAttribute("update", true);
+        showEditForm(request, response);
     }
 
     private void deleteBook(HttpServletRequest request, HttpServletResponse response)
@@ -140,9 +153,9 @@ public class CrudPanelServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("id"));
             bookService.delete(id);
-            response.sendRedirect("/crudPanel");
         } catch (DeleteBookFailedException e) {
-//             TODO: 08.11.2021
+            request.setAttribute("message", "Не удалось удалить");
         }
+        response.sendRedirect("/crudPanel");
     }
 }
